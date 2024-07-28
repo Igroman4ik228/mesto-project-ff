@@ -35,32 +35,8 @@ function showCard(evt) {
   popupImage.src = evt.target.src;
   popupCaption.textContent = evt.target.alt;
 
-  document.addEventListener('keydown', handlePressEscape);
-  popupTypeImage.addEventListener('click', handleOverlayOrCloseBtn);
-
   openModal(popupTypeImage);
 }
-
-// Слушатель для кнопки редактирования профиля
-profileEditButton.addEventListener('click', () => {
-  nameInput.value = name.textContent;
-  jobInput.value = job.textContent;
-
-  document.addEventListener('keydown', handlePressEscape);
-  popupTypeEdit.addEventListener('click', handleOverlayOrCloseBtn);
-  popupTypeEdit.addEventListener('submit', handleFormSubmit);
-
-  openModal(popupTypeEdit);
-});
-
-// Слушатель для кнопки добавления новой карточки
-profileAddButton.addEventListener('click', () => {
-  document.addEventListener('keydown', handlePressEscape);
-  popupTypeNewCard.addEventListener('click', handleOverlayOrCloseBtn);
-  popupTypeNewCard.addEventListener('submit', handleFormSubmit);
-
-  openModal(popupTypeNewCard);
-});
 
 // Функция обработки формы
 function handleFormSubmit(evt) {
@@ -85,3 +61,23 @@ function handleFormSubmit(evt) {
 
   closeModal(modal);
 }
+
+// Слушатель для кнопки редактирования профиля
+profileEditButton.addEventListener('click', () => {
+  nameInput.value = name.textContent;
+  jobInput.value = job.textContent;
+
+  openModal(popupTypeEdit);
+});
+
+// Слушатель для кнопки добавления новой карточки
+profileAddButton.addEventListener('click', () => {
+  openModal(popupTypeNewCard);
+});
+
+// Другие слушатели
+popupTypeImage.addEventListener('click', handleOverlayOrCloseBtn);
+popupTypeEdit.addEventListener('click', handleOverlayOrCloseBtn);
+popupTypeEdit.addEventListener('submit', handleFormSubmit);
+popupTypeNewCard.addEventListener('click', handleOverlayOrCloseBtn);
+popupTypeNewCard.addEventListener('submit', handleFormSubmit);
