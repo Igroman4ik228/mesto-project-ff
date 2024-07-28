@@ -15,7 +15,6 @@ function handlePressEscape(evt) {
   if (evt.key === 'Escape') {
     const openModal = document.querySelector('.popup_is-opened');
     closeModal(openModal);
-    console.log("!");
   }
 }
 
