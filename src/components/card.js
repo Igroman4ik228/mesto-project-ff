@@ -30,4 +30,4 @@ function likeCard(evt) {
   evt.target.classList.toggle('card__like-button_is-active');
 }
 
-export { createCard, deleteCard, likeCard }
+export { createCard, deleteCard, likeCard };
