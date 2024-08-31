@@ -1,7 +1,7 @@
 # Проект "Mesto"
 
 <p align="center">
-      <img src="https://i.ibb.co/n7f8dZG/image.png" width="726" alt="image" border="0">
+      <img src="https://i.ibb.co/DfnmK5d/mesto-logo.png" width="726">
 </p>
 
 ## Описание проекта
