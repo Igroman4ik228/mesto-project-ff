@@ -80,23 +80,38 @@ function handleFormSubmit(evt) {
       .then(() => {
         profileName.textContent = nameInput.value
         profileDesc.textContent = descInput.value;
+
+        closeModal(modal);
       })
       .finally(() => submitButton.textContent = "Сохранить");
   }
   else if (modal === popupTypeNewCard) {
-    // Добавление карточки
-    addCard(placeNameInput.value, linkInput.value)
-      .then((newCardData) => {
-        const resultCard = createCard(newCardData, true, false, deleteCard, likeCard, showCard);
-        placesList.prepend(resultCard);
+    const url = linkInput.value
+    // Проверка URL
+    validateImageUrl(url)
+      .then(isValidUrl => {
+        if (!isValidUrl) {
+          const linkInputError = popupTypeNewCard.querySelector(".link-input-error");
+          handleErrorLink(linkInput, linkInputError)
+          return;
+        };
 
-        // Очистка формы
-        const form = modal.querySelector('.popup__form');
-        form.reset();
+        // Добавление карточки
+        addCard(placeNameInput.value, linkInput.value)
+          .then((newCardData) => {
+            const resultCard = createCard(newCardData, true, false, deleteCard, likeCard, showCard);
+            placesList.prepend(resultCard);
 
-        // Очистка ошибок валидации
-        const newCardForm = modal.querySelector(".popup__form");
-        clearValidation(newCardForm, validationConfig);
+            // Очистка формы
+            const form = modal.querySelector('.popup__form');
+            form.reset();
+
+            // Очистка ошибок валидации
+            const newCardForm = modal.querySelector(".popup__form");
+            clearValidation(newCardForm, validationConfig);
+
+            closeModal(modal);
+          });
       })
       .finally(() => submitButton.textContent = "Сохранить");
   }
@@ -106,9 +121,9 @@ function handleFormSubmit(evt) {
     validateImageUrl(url)
       .then(isValidUrl => {
         if (!isValidUrl) {
-          alert("Неверная ссылка на изображение или файл не доступен. " +
-            "Пожалуйста введите правильную ссылку.");
-          return
+          const linkInputAvatarError = popupTypeAvatar.querySelector(".link-input-avatar-error");
+          handleErrorLink(linkInputAvatar, linkInputAvatarError);
+          return;
         };
 
         // Обновление аватарки профиля
@@ -116,12 +131,21 @@ function handleFormSubmit(evt) {
           .then(() => {
             profileImage.style.backgroundImage = `url(${url})`
           });
+
+        closeModal(modal);
       })
       .finally(() => submitButton.textContent = "Сохранить");
   };
-
-  closeModal(modal);
 };
+
+// Функция для ошибок валидации ссылок
+function handleErrorLink(input,
+  errorElement,
+  message = "Неверная ссылка на изображение или файл не доступен.") {
+  errorElement.textContent = message;
+  errorElement.classList.add(validationConfig.errorClass);
+  input.classList.add(validationConfig.inputErrorClass);
+}
 
 // Слушатель для кнопки редактирования профиля
 profileEditButton.addEventListener('click', () => {
@@ -142,6 +166,10 @@ profileAddButton.addEventListener('click', () => openModal(popupTypeNewCard));
 profileImage.addEventListener('click', () => {
   const imageUrl = profileImage.style.backgroundImage.replace(/url\(["']?(.*?)["']?\)/, '$1');
   linkInputAvatar.value = imageUrl;
+
+  // Очистка ошибок валидации
+  const avatarForm = popupTypeAvatar.querySelector(".popup__form");
+  clearValidation(avatarForm, validationConfig);
 
   openModal(popupTypeAvatar)
 });

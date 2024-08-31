@@ -43,6 +43,15 @@ function checkInputValidity(formElement,
   errorClass) {
   if (inputElement.validity.patternMismatch)
     inputElement.setCustomValidity(inputElement.dataset.errorMessage);
+  // else if (inputElement.classList.contains("popup__input_type_url")) {
+  //   validateImageUrl(inputElement.value)
+  //     .then(isValidUrl => {
+  //       if (!isValidUrl) {
+  //         inputElement.setCustomValidity("Неверная ссылка на изображение или файл не доступен. " + "Пожалуйста введите правильную ссылку.");
+  //         return
+  //       };
+  //     })
+  // }
   else
     inputElement.setCustomValidity("");
 
@@ -94,3 +103,4 @@ function hideInputError(formElement,
 };
 
 export { clearValidation, enableValidation };
+

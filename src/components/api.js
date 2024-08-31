@@ -17,7 +17,7 @@ export const getInitialCards = () => {
     method: 'GET',
     headers: config.headers
   })
-    .then(res => { return checkResponse(res) })
+    .then(res => checkResponse(res))
     .catch(err => console.error(err));
 };
 
@@ -26,7 +26,7 @@ export const getUserInfo = () => {
     method: 'GET',
     headers: config.headers
   })
-    .then(res => { return checkResponse(res) })
+    .then(res => checkResponse(res))
     .catch(err => console.error(err));
 };
 
@@ -50,7 +50,7 @@ export const updateUserAvatar = (url) => {
       avatar: url
     })
   })
-    .then(res => { return checkResponse(res) })
+    .then(res => checkResponse(res))
     .catch(err => console.error(err));
 };
 
@@ -63,7 +63,7 @@ export const addCard = (nameCard, linkCard) => {
       link: linkCard
     })
   })
-    .then(res => { return checkResponse(res) })
+    .then(res => checkResponse(res))
     .catch(err => console.error(err));
 };
 
@@ -72,7 +72,7 @@ export const removeCard = (cardId) => {
     method: 'DELETE',
     headers: config.headers
   })
-    .then(res => { return checkResponse(res) })
+    .then(res => checkResponse(res))
     .catch(err => console.error(err));
 };
 
@@ -81,7 +81,7 @@ export const requestLikeCard = (cardId) => {
     method: 'PUT',
     headers: config.headers
   })
-    .then(res => { return checkResponse(res) })
+    .then(res => checkResponse(res))
     .catch(err => console.error(err));
 };
 
@@ -90,10 +90,9 @@ export const unlikeCard = (cardId) => {
     method: 'DELETE',
     headers: config.headers
   })
-    .then(res => { return checkResponse(res) })
+    .then(res => checkResponse(res))
     .catch(err => console.error(err));
 };
-
 
 export const validateImageUrl = (url) => {
   return fetch(url, {
@@ -112,4 +111,4 @@ export const validateImageUrl = (url) => {
       return true;
     })
     .catch(() => false);
-}
+};
