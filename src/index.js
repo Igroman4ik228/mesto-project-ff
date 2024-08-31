@@ -67,6 +67,17 @@ function showCard(evt) {
   openModal(popupTypeImage);
 };
 
+// Функция для ошибок валидации ссылок
+function handleErrorLink(input,
+  errorElement,
+  submitButton,
+  message = "Неверная ссылка на изображение или файл не доступен.") {
+  errorElement.textContent = message;
+  errorElement.classList.add(validationConfig.errorClass);
+  input.classList.add(validationConfig.inputErrorClass);
+  submitButton.classList.toggle(validationConfig.inactiveButtonClass);
+}
+
 // Функция обработки формы
 function handleFormSubmit(evt) {
   evt.preventDefault();
@@ -92,7 +103,7 @@ function handleFormSubmit(evt) {
       .then(isValidUrl => {
         if (!isValidUrl) {
           const linkInputError = popupTypeNewCard.querySelector(".link-input-error");
-          handleErrorLink(linkInput, linkInputError)
+          handleErrorLink(linkInput, linkInputError, submitButton)
           return;
         };
 
@@ -122,7 +133,7 @@ function handleFormSubmit(evt) {
       .then(isValidUrl => {
         if (!isValidUrl) {
           const linkInputAvatarError = popupTypeAvatar.querySelector(".link-input-avatar-error");
-          handleErrorLink(linkInputAvatar, linkInputAvatarError);
+          handleErrorLink(linkInputAvatar, linkInputAvatarError, submitButton);
           return;
         };
 
@@ -137,15 +148,6 @@ function handleFormSubmit(evt) {
       .finally(() => submitButton.textContent = "Сохранить");
   };
 };
-
-// Функция для ошибок валидации ссылок
-function handleErrorLink(input,
-  errorElement,
-  message = "Неверная ссылка на изображение или файл не доступен.") {
-  errorElement.textContent = message;
-  errorElement.classList.add(validationConfig.errorClass);
-  input.classList.add(validationConfig.inputErrorClass);
-}
 
 // Слушатель для кнопки редактирования профиля
 profileEditButton.addEventListener('click', () => {
