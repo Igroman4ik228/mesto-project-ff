@@ -29,10 +29,6 @@ const popupCaption = popupTypeImage.querySelector('.popup__caption');
 const popupTypeAvatar = document.querySelector('.popup_type_avatar');
 const linkInputAvatar = popupTypeAvatar.querySelector('.popup__input_type_url');
 
-const popupConfirmDelete = document.querySelector('.popup_type_confirm-delete');
-
-let idCardForDelete = null;
-
 // Конфигурация валидации
 const validationConfig = {
   formSelector: '.popup__form',
@@ -42,8 +38,6 @@ const validationConfig = {
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__error_visible'
 };
-
-
 
 
 // Функция открытия карточки
@@ -194,5 +188,3 @@ popupTypeNewCard.addEventListener('click', handleOverlayOrCloseBtn);
 popupTypeNewCard.addEventListener('submit', handleFormSubmit);
 
 popupTypeImage.addEventListener('click', handleOverlayOrCloseBtn);
-
-popupConfirmDelete.addEventListener('submit', handleFormSubmit);
