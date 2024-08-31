@@ -29,6 +29,10 @@ const popupCaption = popupTypeImage.querySelector('.popup__caption');
 const popupTypeAvatar = document.querySelector('.popup_type_avatar');
 const linkInputAvatar = popupTypeAvatar.querySelector('.popup__input_type_url');
 
+const popupConfirmDelete = document.querySelector('.popup_type_confirm-delete');
+
+let idCardForDelete = null;
+
 // Конфигурация валидации
 const validationConfig = {
   formSelector: '.popup__form',
@@ -37,27 +41,10 @@ const validationConfig = {
   inactiveButtonClass: 'popup__button_disabled',
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__error_visible'
-}
+};
 
 
-// Включение валидации форм
-enableValidation(validationConfig);
 
-// Загрузка начальных данных
-Promise.all([getUserInfo(), getInitialCards()])
-  .then(([userInfo, initialCards]) => {
-    profileImage.style.backgroundImage = `url(${userInfo.avatar})`;
-    profileName.textContent = userInfo.name;
-    profileDesc.textContent = userInfo.about;
-
-    initialCards.forEach(cardData => {
-      const isOwner = userInfo._id === cardData.owner._id
-      const isLiked = cardData.likes.some(like => like._id === userInfo._id);
-
-      const resultCard = createCard(cardData, isOwner, isLiked, deleteCard, likeCard, showCard);
-      placesList.append(resultCard);
-    });
-  });
 
 // Функция открытия карточки
 function showCard(evt) {
@@ -146,8 +133,27 @@ function handleFormSubmit(evt) {
         closeModal(modal);
       })
       .finally(() => submitButton.textContent = "Сохранить");
-  };
+  }
 };
+
+// Включение валидации форм
+enableValidation(validationConfig);
+
+// Загрузка начальных данных
+Promise.all([getUserInfo(), getInitialCards()])
+  .then(([userInfo, initialCards]) => {
+    profileImage.style.backgroundImage = `url(${userInfo.avatar})`;
+    profileName.textContent = userInfo.name;
+    profileDesc.textContent = userInfo.about;
+
+    initialCards.forEach(cardData => {
+      const isOwner = userInfo._id === cardData.owner._id
+      const isLiked = cardData.likes.some(like => like._id === userInfo._id);
+
+      const resultCard = createCard(cardData, isOwner, isLiked, deleteCard, likeCard, showCard);
+      placesList.append(resultCard);
+    });
+  });
 
 // Слушатель для кнопки редактирования профиля
 profileEditButton.addEventListener('click', () => {
@@ -176,6 +182,7 @@ profileImage.addEventListener('click', () => {
   openModal(popupTypeAvatar)
 });
 
+
 // Другие слушатели
 popupTypeEdit.addEventListener('click', handleOverlayOrCloseBtn);
 popupTypeEdit.addEventListener('submit', handleFormSubmit);
@@ -187,3 +194,5 @@ popupTypeNewCard.addEventListener('click', handleOverlayOrCloseBtn);
 popupTypeNewCard.addEventListener('submit', handleFormSubmit);
 
 popupTypeImage.addEventListener('click', handleOverlayOrCloseBtn);
+
+popupConfirmDelete.addEventListener('submit', handleFormSubmit);
