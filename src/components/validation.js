@@ -78,9 +78,9 @@ function showInputError(formElement,
   inputErrorClass,
   errorClass) {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.add(inputErrorClass);
-  errorElement.classList.add(errorClass);
   errorElement.textContent = errorMessage;
+  errorElement.classList.add(errorClass);
+  inputElement.classList.add(inputErrorClass);
 };
 
 function hideInputError(formElement,
@@ -88,10 +88,9 @@ function hideInputError(formElement,
   inputErrorClass,
   errorClass) {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.remove(inputErrorClass);
-  errorElement.classList.remove(errorClass);
   errorElement.textContent = '';
+  errorElement.classList.remove(errorClass);
+  inputElement.classList.remove(inputErrorClass);
 };
 
 export { clearValidation, enableValidation };
-

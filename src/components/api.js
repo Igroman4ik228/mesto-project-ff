@@ -4,109 +4,112 @@ const config = {
     authorization: 'b0628161-c71c-4e52-9e26-a3e056174f00',
     'Content-Type': 'application/json'
   }
-}
+};
+
+const checkResponse = (res) => {
+  if (!res.ok)
+    return Promise.reject(`Ошибка: ${res.status}`);
+  return res.json();
+};
 
 export const getInitialCards = () => {
   return fetch(`${config.baseUrl}/cards`, {
+    method: 'GET',
     headers: config.headers
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-}
+    .then(res => { return checkResponse(res) })
+    .catch(err => console.error(err));
+};
 
 export const getUserInfo = () => {
   return fetch(`${config.baseUrl}/users/me`, {
+    method: 'GET',
     headers: config.headers
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-}
+    .then(res => { return checkResponse(res) })
+    .catch(err => console.error(err));
+};
 
-export const updateUserInfo = (name, about) => {
-  fetch(`${config.baseUrl}/users/me`, {
+export const updateUserInfo = (userName, userAbout) => {
+  return fetch(`${config.baseUrl}/users/me`, {
     method: 'PATCH',
     headers: config.headers,
     body: JSON.stringify({
-      name: name,
-      about: about
+      name: userName,
+      about: userAbout
     })
   })
-    .catch((err) => {
-      console.log(err);
-    });
-}
-
-export const addCard = (name, link) => {
-  fetch(`${config.baseUrl}/cards`, {
-    method: 'PATCH',
-    headers: config.headers,
-    body: JSON.stringify({
-      name: name,
-      link: link,
-    })
-  })
-    .catch((err) => {
-      console.log(err);
-    });
-}
-
-export const removeCard = (cardId) => {
-  fetch(`${config.baseUrl}/cards/${cardId}`, {
-    method: 'DELETE'
-  })
-    .catch((err) => {
-      console.log(err);
-    });
-}
-
-export const likeCard = (cardId) => {
-  fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
-    method: 'PUT'
-  })
-    .catch((err) => {
-      console.log(err);
-    });
-}
-
-export const unlikeCard = (cardId) => {
-  fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
-    method: 'DELETE'
-  })
-    .catch((err) => {
-      console.log(err);
-    });
-}
+    .catch(err => console.error(err));
+};
 
 export const updateUserAvatar = (url) => {
-  fetch(`${config.baseUrl}/users/me/avatar`, {
+  return fetch(`${config.baseUrl}/users/me/avatar`, {
     method: 'PATCH',
     headers: config.headers,
     body: JSON.stringify({
       avatar: url
     })
   })
+    .then(res => { return checkResponse(res) })
+    .catch(err => console.error(err));
+};
+
+export const addCard = (nameCard, linkCard) => {
+  return fetch(`${config.baseUrl}/cards`, {
+    method: 'POST',
+    headers: config.headers,
+    body: JSON.stringify({
+      name: nameCard,
+      link: linkCard
+    })
+  })
+    .then(res => { return checkResponse(res) })
+    .catch(err => console.error(err));
+};
+
+export const removeCard = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/${cardId}`, {
+    method: 'DELETE',
+    headers: config.headers
+  })
+    .then(res => { return checkResponse(res) })
+    .catch(err => console.error(err));
+};
+
+export const requestLikeCard = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    method: 'PUT',
+    headers: config.headers
+  })
+    .then(res => { return checkResponse(res) })
+    .catch(err => console.error(err));
+};
+
+export const unlikeCard = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    method: 'DELETE',
+    headers: config.headers
+  })
+    .then(res => { return checkResponse(res) })
+    .catch(err => console.error(err));
+};
+
+
+export const validateImageUrl = (url) => {
+  return fetch(url, {
+    method: 'HEAD'
+  })
     .then(res => {
-      if (res.ok) {
-        return
+      if (!res.ok) {
+        return false;
       }
 
-      return Promise.reject(`Ошибка: ${res.status}`);
+      const contentType = res.headers.get('Content-Type');
+      if (!contentType || !contentType.startsWith('image/')) {
+        return false;
+      }
+
+      return true;
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch(() => false);
 }

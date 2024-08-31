@@ -26,4 +26,4 @@ function handleOverlayOrCloseBtn(evt) {
   }
 }
 
-export { openModal, closeModal, handlePressEscape, handleOverlayOrCloseBtn }
+export { closeModal, handleOverlayOrCloseBtn, handlePressEscape, openModal };
