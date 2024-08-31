@@ -1,6 +1,6 @@
 # Проект "Mesto"
-<p align="left">
-      <img src="https://i.ibb.co/DfnmK5d/mesto-logo.png" width="500">
+<p align="center">
+      <img src="https://i.ibb.co/DfnmK5d/mesto-logo.png" width="400">
 </p>
 
 
