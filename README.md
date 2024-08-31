@@ -28,25 +28,21 @@
 ### Установка и запуск
 
 1. **Клонируйте репозиторий:**
-
-   ```bash
-   git clone https://github.com/yourusername/mesto.git
-   ```
+```bash
+git clone https://github.com/yourusername/mesto.git
+```
    
 2. **Перейдите в директорию проекта:**
-
-  ```bash
-  cd mesto
-  ```
+```bash
+cd mesto
+```
 
 3. **Установите зависимости:**
-
-   ```bash
-   npm install
-   ```
+```bash
+npm install
+```
    
 4. **Запустите проект:**
-
-   ```bash
-   npm run dev
-   ```
+```bash
+npm run dev
+```
