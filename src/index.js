@@ -57,7 +57,7 @@ function handleErrorLink(input,
   errorElement.classList.add(validationConfig.errorClass);
   input.classList.add(validationConfig.inputErrorClass);
   submitButton.classList.toggle(validationConfig.inactiveButtonClass);
-}
+};
 
 // Функция обработки формы
 function handleFormSubmit(evt) {
@@ -175,7 +175,6 @@ profileImage.addEventListener('click', () => {
 
   openModal(popupTypeAvatar)
 });
-
 
 // Другие слушатели
 popupTypeEdit.addEventListener('click', handleOverlayOrCloseBtn);

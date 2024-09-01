@@ -46,7 +46,7 @@ export function deleteCard(cardElement, cardId) {
 export function likeCard(evt, likeCount, cardId) {
   const isLiked = evt.target.classList.contains('card__like-button_is-active');
   const res = isLiked ? unlikeCard(cardId) : requestLikeCard(cardId);
-  res.then((res) => {
+  res.then(res => {
     likeCount.textContent = res.likes.length;
     evt.target.classList.toggle('card__like-button_is-active');
   });
