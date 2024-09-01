@@ -4,7 +4,10 @@ import { requestLikeCard, unlikeCard } from './api.js';
 const cardTemplate = document.querySelector('#card-template').content;
 
 // Функция создания карточки
-export function createCard(cardData, isOwner, isLiked, confirmDeleteCardFunc, likeCardFunc, showCardFunc) {
+export function createCard(cardInfo, cardActions) {
+  const { cardData, isOwner, isLiked } = cardInfo;
+  const { confirmDeleteCardFunc, likeCardFunc, showCardFunc } = cardActions;
+
   const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true);
   const cardTitle = cardElement.querySelector('.card__title')
   const cardImage = cardElement.querySelector('.card__image');
@@ -38,5 +41,6 @@ export function likeCard(evt, likeCount, cardId) {
   res.then(res => {
     likeCount.textContent = res.likes.length;
     evt.target.classList.toggle('card__like-button_is-active');
-  });
+  })
+    .catch(err => console.error(err))
 };

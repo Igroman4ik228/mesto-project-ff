@@ -2,14 +2,13 @@ function clearValidation(profileForm, validationConfig) {
   const inputList = Array.from(profileForm.querySelectorAll(validationConfig.inputSelector));
   const buttonElement = profileForm.querySelector(validationConfig.submitButtonSelector);
 
-  buttonElement.classList.add(validationConfig.inactiveButtonClass);
-
   inputList.forEach((inputElement) => {
     hideInputError(profileForm,
       inputElement,
       validationConfig.inputErrorClass,
       validationConfig.errorClass);
   });
+  toggleButtonState(inputList, buttonElement, validationConfig.inactiveButtonClass);
 };
 
 function enableValidation(validationConfig) {
@@ -60,10 +59,15 @@ function checkInputValidity(formElement,
 };
 
 function toggleButtonState(inputList, buttonElement, inactiveButtonClass) {
-  if (hasInvalidInput(inputList))
+  if (hasInvalidInput(inputList)) {
     buttonElement.classList.add(inactiveButtonClass);
-  else
+    buttonElement.disabled = true;
+  }
+  else {
     buttonElement.classList.remove(inactiveButtonClass);
+    buttonElement.disabled = false;
+  }
+
 };
 
 function hasInvalidInput(inputList) {
@@ -72,26 +76,32 @@ function hasInvalidInput(inputList) {
   });
 };
 
-function showInputError(formElement,
-  inputElement,
-  errorMessage,
-  inputErrorClass,
-  errorClass) {
+function showInputError(formElement, inputElement, errorMessage, inputErrorClass, errorClass) {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   errorElement.textContent = errorMessage;
   errorElement.classList.add(errorClass);
   inputElement.classList.add(inputErrorClass);
 };
 
-function hideInputError(formElement,
-  inputElement,
-  inputErrorClass,
-  errorClass) {
+function hideInputError(formElement, inputElement, inputErrorClass, errorClass) {
+  inputElement.setCustomValidity("");
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   errorElement.textContent = '';
   errorElement.classList.remove(errorClass);
   inputElement.classList.remove(inputErrorClass);
 };
 
-export { clearValidation, enableValidation };
+// Обработчик для ошибок валидации ссылок
+function handleErrorLink(elements, validationConfig,
+  message = "Неверная ссылка на изображение или файл не доступен.") {
+  const { inputElement, linkInputError, submitButton } = elements;
+
+  linkInputError.textContent = message;
+  linkInputError.classList.add(validationConfig.errorClass);
+  inputElement.classList.add(validationConfig.inputErrorClass);
+  submitButton.classList.add(validationConfig.inactiveButtonClass);
+  submitButton.disabled = true;
+};
+
+export { clearValidation, enableValidation, handleErrorLink };
 

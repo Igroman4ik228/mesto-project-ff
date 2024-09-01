@@ -17,8 +17,7 @@ export const getInitialCards = () => {
     method: 'GET',
     headers: config.headers
   })
-    .then(res => checkResponse(res))
-    .catch(err => console.error(err));
+    .then(res => checkResponse(res));
 };
 
 export const getUserInfo = () => {
@@ -26,8 +25,7 @@ export const getUserInfo = () => {
     method: 'GET',
     headers: config.headers
   })
-    .then(res => checkResponse(res))
-    .catch(err => console.error(err));
+    .then(res => checkResponse(res));
 };
 
 export const updateUserInfo = (userName, userAbout) => {
@@ -39,7 +37,7 @@ export const updateUserInfo = (userName, userAbout) => {
       about: userAbout
     })
   })
-    .catch(err => console.error(err));
+    .then(res => checkResponse(res));
 };
 
 export const updateUserAvatar = (url) => {
@@ -50,8 +48,7 @@ export const updateUserAvatar = (url) => {
       avatar: url
     })
   })
-    .then(res => checkResponse(res))
-    .catch(err => console.error(err));
+    .then(res => checkResponse(res));
 };
 
 export const addCard = (nameCard, linkCard) => {
@@ -63,8 +60,7 @@ export const addCard = (nameCard, linkCard) => {
       link: linkCard
     })
   })
-    .then(res => checkResponse(res))
-    .catch(err => console.error(err));
+    .then(res => checkResponse(res));
 };
 
 export const removeCard = (cardId) => {
@@ -72,8 +68,7 @@ export const removeCard = (cardId) => {
     method: 'DELETE',
     headers: config.headers
   })
-    .then(res => checkResponse(res))
-    .catch(err => console.error(err));
+    .then(res => checkResponse(res));
 };
 
 export const requestLikeCard = (cardId) => {
@@ -81,8 +76,7 @@ export const requestLikeCard = (cardId) => {
     method: 'PUT',
     headers: config.headers
   })
-    .then(res => checkResponse(res))
-    .catch(err => console.error(err));
+    .then(res => checkResponse(res));
 };
 
 export const unlikeCard = (cardId) => {
@@ -90,8 +84,7 @@ export const unlikeCard = (cardId) => {
     method: 'DELETE',
     headers: config.headers
   })
-    .then(res => checkResponse(res))
-    .catch(err => console.error(err));
+    .then(res => checkResponse(res));
 };
 
 export const validateImageUrl = (url) => {
