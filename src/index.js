@@ -1,5 +1,5 @@
-import { addCard, getInitialCards, getUserInfo, updateUserAvatar, updateUserInfo, validateImageUrl } from './components/api.js';
-import { createCard, deleteCard, likeCard } from './components/card.js';
+import { addCard, getInitialCards, getUserInfo, removeCard, updateUserAvatar, updateUserInfo, validateImageUrl } from './components/api.js';
+import { createCard, likeCard } from './components/card.js';
 import { closeModal, handleOverlayOrCloseBtn, openModal } from './components/modal.js';
 import { clearValidation, enableValidation } from './components/validation.js';
 import './pages/index.css';
@@ -41,6 +41,15 @@ const validationConfig = {
   errorClass: 'popup__error_visible'
 };
 
+let infoForDeleteCard = {};
+
+// Функция подтверждения удаления карточки 
+const confirmDeleteCard = (cardElement, cardId) => {
+  infoForDeleteCard.elementCardForDelete = cardElement;
+  infoForDeleteCard.cardIdForDelete = cardId;
+
+  openModal(popupConfirmDelete)
+};
 
 // Функция открытия карточки
 function showCard(evt) {
@@ -50,10 +59,8 @@ function showCard(evt) {
   openModal(popupTypeImage);
 };
 
-// Функция для ошибок валидации ссылок
-function handleErrorLink(input,
-  errorElement,
-  submitButton,
+// Обработчик для ошибок валидации ссылок
+function handleErrorLink(input, errorElement, submitButton,
   message = "Неверная ссылка на изображение или файл не доступен.") {
   errorElement.textContent = message;
   errorElement.classList.add(validationConfig.errorClass);
@@ -67,8 +74,8 @@ function handleFormSubmit(evt) {
 
   const modal = evt.currentTarget;
   const submitButton = modal.querySelector(".popup__button")
-  submitButton.textContent = "Сохранение...";
   if (modal === popupTypeEdit) {
+    submitButton.textContent = "Сохранение...";
     // Обновление данных профиля
     updateUserInfo(nameInput.value, descInput.value)
       .then(() => {
@@ -80,6 +87,7 @@ function handleFormSubmit(evt) {
       .finally(() => submitButton.textContent = "Сохранить");
   }
   else if (modal === popupTypeNewCard) {
+    submitButton.textContent = "Сохранение...";
     const url = linkInput.value
     // Проверка URL
     validateImageUrl(url)
@@ -93,7 +101,7 @@ function handleFormSubmit(evt) {
         // Добавление карточки
         addCard(placeNameInput.value, linkInput.value)
           .then((newCardData) => {
-            const resultCard = createCard(newCardData, true, false, deleteCard, likeCard, showCard);
+            const resultCard = createCard(newCardData, true, false, confirmDeleteCard, likeCard, showCard);
             placesList.prepend(resultCard);
 
             // Очистка формы
@@ -110,12 +118,13 @@ function handleFormSubmit(evt) {
       .finally(() => submitButton.textContent = "Сохранить");
   }
   else if (modal === popupTypeAvatar) {
+    submitButton.textContent = "Сохранение...";
     const url = linkInputAvatar.value
     // Проверка URL
     validateImageUrl(url)
       .then(isValidUrl => {
         if (!isValidUrl) {
-          const linkInputAvatarError = popupTypeAvatar.querySelector(".link-input-avatar-error");
+          const linkInputAvatarError = popupTypeAvatar.querySelector(".link-input-error");
           handleErrorLink(linkInputAvatar, linkInputAvatarError, submitButton);
           return;
         };
@@ -130,6 +139,16 @@ function handleFormSubmit(evt) {
       })
       .finally(() => submitButton.textContent = "Сохранить");
   }
+  else if (modal === popupConfirmDelete) {
+    submitButton.textContent = "Удаление...";
+    // Удаление карточки
+    removeCard(infoForDeleteCard.cardIdForDelete)
+      .then(() => {
+        infoForDeleteCard.elementCardForDelete.remove();
+        closeModal(modal);
+      })
+      .finally(() => submitButton.textContent = "Да");
+  };
 };
 
 // Включение валидации форм
@@ -146,7 +165,7 @@ Promise.all([getUserInfo(), getInitialCards()])
       const isOwner = userInfo._id === cardData.owner._id
       const isLiked = cardData.likes.some(like => like._id === userInfo._id);
 
-      const resultCard = createCard(cardData, isOwner, isLiked, deleteCard, likeCard, showCard);
+      const resultCard = createCard(cardData, isOwner, isLiked, confirmDeleteCard, likeCard, showCard);
       placesList.append(resultCard);
     });
   });
@@ -188,6 +207,7 @@ popupTypeAvatar.addEventListener('submit', handleFormSubmit);
 popupTypeNewCard.addEventListener('click', handleOverlayOrCloseBtn);
 popupTypeNewCard.addEventListener('submit', handleFormSubmit);
 
-popupTypeImage.addEventListener('click', handleOverlayOrCloseBtn);
-
+popupConfirmDelete.addEventListener('click', handleOverlayOrCloseBtn);
 popupConfirmDelete.addEventListener('submit', handleFormSubmit);
+
+popupTypeImage.addEventListener('click', handleOverlayOrCloseBtn);
