@@ -37,7 +37,7 @@ function createCard(cardData,
 };
 
 // Функция удаления карточки 
-const deleteCard = (cardElement, cardId) => {
+const handleDeleteCard = (cardElement, cardId) => {
   removeCard(cardId)
     .then(() => cardElement.remove());
 };
@@ -53,3 +53,4 @@ function likeCard(evt, likeCount, cardId) {
 };
 
 export { createCard, deleteCard, likeCard };
+
