@@ -1,15 +1,10 @@
-import { removeCard, requestLikeCard, unlikeCard } from './api.js';
+import { requestLikeCard, unlikeCard } from './api.js';
 
 // Темплейт(шаблон) карточки
 const cardTemplate = document.querySelector('#card-template').content;
 
 // Функция создания карточки
-export function createCard(cardData,
-  isOwner,
-  isLiked,
-  deleteCardFunc,
-  likeCardFunc,
-  showCardFunc) {
+export function createCard(cardData, isOwner, isLiked, confirmDeleteCardFunc, likeCardFunc, showCardFunc) {
   const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true);
   const cardTitle = cardElement.querySelector('.card__title')
   const cardImage = cardElement.querySelector('.card__image');
@@ -24,7 +19,7 @@ export function createCard(cardData,
 
   const cardDeleteButton = cardElement.querySelector('.card__delete-button');
   if (isOwner)
-    cardDeleteButton.addEventListener('click', () => deleteCardFunc(cardElement, cardData._id));
+    cardDeleteButton.addEventListener('click', () => confirmDeleteCardFunc(cardElement, cardData._id));
   else
     cardDeleteButton.remove();
 
@@ -34,12 +29,6 @@ export function createCard(cardData,
   cardLike.addEventListener('click', (evt) => likeCardFunc(evt, likeCount, cardData._id));
 
   return cardElement;
-};
-
-// Функция удаления карточки 
-export function deleteCard(cardElement, cardId) {
-  removeCard(cardId)
-    .then(() => cardElement.remove());
 };
 
 // Функция лайка карточки
