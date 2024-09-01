@@ -39,27 +39,8 @@ const validationConfig = {
   inactiveButtonClass: 'popup__button_disabled',
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__error_visible'
-}
+};
 
-
-// Включение валидации форм
-enableValidation(validationConfig);
-
-// Загрузка начальных данных
-Promise.all([getUserInfo(), getInitialCards()])
-  .then(([userInfo, initialCards]) => {
-    profileImage.style.backgroundImage = `url(${userInfo.avatar})`;
-    profileName.textContent = userInfo.name;
-    profileDesc.textContent = userInfo.about;
-
-    initialCards.forEach(cardData => {
-      const isOwner = userInfo._id === cardData.owner._id
-      const isLiked = cardData.likes.some(like => like._id === userInfo._id);
-
-      const resultCard = createCard(cardData, isOwner, isLiked, deleteCard, likeCard, showCard);
-      placesList.append(resultCard);
-    });
-  });
 
 // Функция открытия карточки
 function showCard(evt) {
@@ -78,7 +59,7 @@ function handleErrorLink(input,
   errorElement.classList.add(validationConfig.errorClass);
   input.classList.add(validationConfig.inputErrorClass);
   submitButton.classList.toggle(validationConfig.inactiveButtonClass);
-}
+};
 
 // Функция обработки формы
 function handleFormSubmit(evt) {
@@ -149,10 +130,26 @@ function handleFormSubmit(evt) {
       })
       .finally(() => submitButton.textContent = "Сохранить");
   }
-  else if (modal === popupConfirmDelete) {
-    deleteCard(cardToDelete)
-  };
 };
+
+// Включение валидации форм
+enableValidation(validationConfig);
+
+// Загрузка начальных данных
+Promise.all([getUserInfo(), getInitialCards()])
+  .then(([userInfo, initialCards]) => {
+    profileImage.style.backgroundImage = `url(${userInfo.avatar})`;
+    profileName.textContent = userInfo.name;
+    profileDesc.textContent = userInfo.about;
+
+    initialCards.forEach(cardData => {
+      const isOwner = userInfo._id === cardData.owner._id
+      const isLiked = cardData.likes.some(like => like._id === userInfo._id);
+
+      const resultCard = createCard(cardData, isOwner, isLiked, deleteCard, likeCard, showCard);
+      placesList.append(resultCard);
+    });
+  });
 
 // Слушатель для кнопки редактирования профиля
 profileEditButton.addEventListener('click', () => {
